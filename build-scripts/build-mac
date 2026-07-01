@@ -1,6 +1,20 @@
 #!/bin/bash
 set -ex
 cd $(dirname $0)/..
-cmake -S . -B build -DCI_MODE=1 -DCMAKE_BUILD_TYPE=Release
-cmake --build build --verbose -j$(sysctl -n hw.ncpu) -- -k
-(cd build; ctest --verbose)
+# # cmake -S . -B build -DCI_MODE=1 -DCMAKE_BUILD_TYPE=Release
+# # cmake --build build --verbose -j$(sysctl -n hw.ncpu) -- -k
+# # DO NOT USE -ffast-math
+export CFLAGS="-O2 -flto -march=native -mtune=native -ftrapv -fstack-protector-all"
+export CXXFLAGS="-O2 -flto -march=native -mtune=native -ftrapv -fstack-protector-all"
+export LDFLAGS="-flto"
+# non default test case enablement:
+export QPDF_TEST_COMPARE_IMAGES=1
+cmake -S . -B build -DZOPFLI=1 -DCI_MODE=1 -DCMAKE_BUILD_TYPE=Release
+cmake --build build --verbose -j5 -- -k
+# (cd build; ctest --verbose)
+if ! cd build; then
+    echo "cd build failed. exiting."
+    exit 1
+fi
+ctest --verbose
+# rw note - consider -flto=thin

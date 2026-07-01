@@ -86,6 +86,15 @@ class QPDF_DLL_CLASS Pl_Flate: public Pipeline
     QPDF_DLL
     static bool zopfli_check_env(QPDFLogger* logger = nullptr);
 
+    // Returns true if qpdf was built with libdeflate support.
+    QPDF_DLL
+    static bool libdeflate_supported();
+
+    // Returns true if libdeflate is enabled. Libdeflate is enabled if QPDF_USE_LIBDEFLATE is set to a value other
+    // than "disabled" and libdeflate support is compiled in.
+    QPDF_DLL
+    static bool libdeflate_enabled();
+
   private:
     QPDF_DLL_PRIVATE
     void handleData(unsigned char const* data, size_t len, int flush);
@@ -95,6 +104,8 @@ class QPDF_DLL_CLASS Pl_Flate: public Pipeline
     void warn(char const*, int error_code);
     QPDF_DLL_PRIVATE
     void finish_zopfli();
+    QPDF_DLL_PRIVATE
+    void finish_libdeflate();
 
     QPDF_DLL_PRIVATE
     static int compression_level;
@@ -118,6 +129,7 @@ class QPDF_DLL_CLASS Pl_Flate: public Pipeline
         unsigned long long written{0};
         std::function<void(char const*, int)> callback;
         std::unique_ptr<std::string> zopfli_buf;
+        std::unique_ptr<std::string> libdeflate_buf;
     };
 
     std::unique_ptr<Members> m;
