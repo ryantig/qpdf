@@ -200,6 +200,12 @@ if(ZOPFLI)
   endif()
 endif()
 
+if(USE_LIBDEFLATE_FOUND)
+  list(APPEND dep_include_directories ${LIBDEFLATE_INCLUDE_DIRS})
+  list(APPEND dep_link_directories ${LIBDEFLATE_LIBRARY_DIRS})
+  list(APPEND dep_link_libraries ${LIBDEFLATE_LIBRARIES})
+endif()
+
 # Update JPEG_INCLUDE in PARENT_SCOPE after we have finished setting it.
 set(JPEG_INCLUDE ${JPEG_INCLUDE} PARENT_SCOPE)
 
@@ -418,6 +424,9 @@ set(OBJECT_LIB libqpdf_object)
 add_library(${OBJECT_LIB} OBJECT ${libqpdf_SOURCES})
 if(OBJECT_LIB_IS_PIC)
   target_compile_definitions(${OBJECT_LIB} PRIVATE libqpdf_EXPORTS)
+endif()
+if(USE_LIBDEFLATE_FOUND)
+  target_compile_definitions(${OBJECT_LIB} PRIVATE USE_LIBDEFLATE=1)
 endif()
 set_target_properties(${OBJECT_LIB} PROPERTIES
   POSITION_INDEPENDENT_CODE ${OBJECT_LIB_IS_PIC})

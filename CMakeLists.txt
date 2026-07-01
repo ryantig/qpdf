@@ -99,6 +99,24 @@ option(DEFAULT_CRYPTO
 
 option(ZOPFLI, "Use zopfli for zlib-compatible compression")
 
+option(REQUIRE_LIBDEFLATE "Require libdeflate for compilation" OFF)
+option(USE_LIBDEFLATE "Use libdeflate for compression if available" ON)
+
+if(USE_LIBDEFLATE)
+  find_package(PkgConfig REQUIRED)
+  pkg_check_modules(LIBDEFLATE libdeflate)
+  if(LIBDEFLATE_FOUND)
+    set(USE_LIBDEFLATE_FOUND ON)
+    message(STATUS "Found libdeflate: ${LIBDEFLATE_LIBRARIES}")
+  else()
+    if(REQUIRE_LIBDEFLATE)
+      message(FATAL_ERROR "libdeflate requested but not found")
+    else()
+      message(STATUS "libdeflate not found, using zlib")
+    endif()
+  endif()
+endif()
+
 # INSTALL_MANUAL is not dependent on building docs. When creating some
 # distributions, we build the doc in one run, copy doc-dist in, and
 # install it elsewhere.
@@ -380,6 +398,9 @@ add_subdirectory(qpdf)
 add_subdirectory(libtests)
 add_subdirectory(examples)
 add_subdirectory(zlib-flate)
+#if(USE_LIBDEFLATE)
+#  add_subdirectory(libdeflate-flate)
+#endif()
 add_subdirectory(manual)
 add_subdirectory(fuzz)
 

@@ -14,6 +14,10 @@
 # include <zopfli.h>
 #endif
 
+#ifdef USE_LIBDEFLATE
+# include <libdeflate.h>
+#endif
+
 using namespace qpdf;
 
 namespace
@@ -50,6 +54,8 @@ Pl_Flate::Members::Members(size_t out_bufsize, action_e action) :
 
     if (action == a_deflate && Pl_Flate::zopfli_enabled()) {
         zopfli_buf = std::make_unique<std::string>();
+    } else if (action == a_deflate && Pl_Flate::libdeflate_enabled()) {
+        libdeflate_buf = std::make_unique<std::string>();
     }
 }
 
@@ -112,6 +118,10 @@ Pl_Flate::write(unsigned char const* data, size_t len)
         m->outbuf.get(), identifier + ": Pl_Flate: write() called after finish() called");
     if (m->zopfli_buf) {
         m->zopfli_buf->append(reinterpret_cast<char const*>(data), len);
+        return;
+    }
+    if (m->libdeflate_buf) {
+        m->libdeflate_buf->append(reinterpret_cast<char const*>(data), len);
         return;
     }
 
@@ -227,6 +237,8 @@ Pl_Flate::finish()
     try {
         if (m->zopfli_buf) {
             finish_zopfli();
+        } else if (m->libdeflate_buf) {
+            finish_libdeflate();
         } else if (m->outbuf.get()) {
             if (m->initialized) {
                 z_stream& zstream = *(static_cast<z_stream*>(m->zdata));
@@ -379,4 +391,62 @@ Pl_Flate::zopfli_check_env(QPDFLogger* logger)
     logger->warn(
         "Set QPDF_ZOPFLI=silent to suppress this warning and use zopfli when available.\n");
     return false;
+}
+
+bool
+Pl_Flate::libdeflate_supported()
+{
+#ifdef USE_LIBDEFLATE
+    return true;
+#else
+    return false;
+#endif
+}
+
+bool
+Pl_Flate::libdeflate_enabled()
+{
+    if (libdeflate_supported()) {
+        std::string value;
+        // default to enabled, disable only if QPDF_LIBDEFLATE is set to "disabled"
+        static bool enabled = !QUtil::get_env("QPDF_LIBDEFLATE", &value) || value != "disabled";
+
+        return enabled;
+    } else {
+        return false;
+    }
+}
+
+void
+Pl_Flate::finish_libdeflate()
+{
+#ifdef USE_LIBDEFLATE
+    if (!m->libdeflate_buf) {
+        return;
+    }
+    auto buf = std::move(*m->libdeflate_buf.release());
+    
+    struct libdeflate_compressor* compressor = libdeflate_alloc_compressor(12);
+    if (!compressor) {
+        throw std::runtime_error("Failed to allocate libdeflate compressor");
+    }
+    
+    size_t max_size = libdeflate_zlib_compress_bound(compressor, buf.size());
+    std::vector<unsigned char> out(max_size);
+    
+    size_t out_size = libdeflate_zlib_compress(
+        compressor,
+        reinterpret_cast<unsigned char const*>(buf.c_str()),
+        buf.size(),
+        out.data(),
+        max_size);
+    
+    libdeflate_free_compressor(compressor);
+    
+    if (out_size == 0) {
+        throw std::runtime_error("libdeflate compression failed");
+    }
+    
+    next()->write(out.data(), out_size);
+#endif
 }
