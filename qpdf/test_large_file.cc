@@ -242,9 +242,9 @@ create_pdf(char const* filename)
 static void
 check_page_contents(size_t pageno, QPDFObjectHandle page)
 {
-    std::shared_ptr<Buffer> buf = page.getKey("/Contents").getStreamData();
+    std::shared_ptr<Buffer> contents_buf = page.getKey("/Contents").getStreamData();
     std::string actual_contents =
-        std::string(reinterpret_cast<char*>(buf->getBuffer()), buf->getSize());
+        std::string(reinterpret_cast<char*>(contents_buf->getBuffer()), contents_buf->getSize());
     std::string expected_contents = generate_page_contents(pageno);
     if (expected_contents != actual_contents) {
         std::cout << "page contents wrong for page " << pageno << '\n'
