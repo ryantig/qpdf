@@ -153,14 +153,14 @@ extern "C" {
     /* Returns the version of the qpdf software. This is guaranteed to be a static value.
      */
     QPDF_DLL
-    char const* qpdf_get_qpdf_version();
+    char const* qpdf_get_qpdf_version(void);
 
     /* Returns dynamically allocated qpdf_data pointer; must be freed by calling qpdf_cleanup. You
      * must call qpdf_read, one of the other qpdf_read_* functions, or qpdf_empty_pdf before calling
      * any function that would need to operate on the PDF file.
      */
     QPDF_DLL
-    qpdf_data qpdf_init();
+    qpdf_data qpdf_init(void);
 
     /* Pass a pointer to the qpdf_data pointer created by qpdf_init to clean up resources. This does
      * not include buffers initialized by functions that return stream data but it otherwise

@@ -43,7 +43,7 @@ print_error(char const* label, qpdf_data q, qpdf_error e)
 }
 
 static void
-report_errors()
+report_errors(void)
 {
     qpdf_error e = 0;
     while (qpdf_more_warnings(qpdf)) {

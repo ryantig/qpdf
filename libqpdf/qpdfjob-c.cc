@@ -17,7 +17,7 @@ struct _qpdfjob_handle
 };
 
 qpdfjob_handle
-qpdfjob_init()
+qpdfjob_init(void)
 {
     return new _qpdfjob_handle;
 }
