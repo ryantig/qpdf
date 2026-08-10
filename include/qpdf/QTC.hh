@@ -29,10 +29,16 @@
 namespace QTC
 {
     QPDF_DLL
-    void TC_real(char const* const scope, char const* const ccase, int n = 0);
+    void TC_real(
+        [[maybe_unused]] char const* const scope,
+        [[maybe_unused]] char const* const ccase,
+        [[maybe_unused]] int n = 0);
 
     inline void
-    TC(char const* const scope, char const* const ccase, int n = 0)
+    TC(
+        [[maybe_unused]] char const* const scope,
+        [[maybe_unused]] char const* const ccase,
+        [[maybe_unused]] int n = 0)
     {
 #ifndef QPDF_DISABLE_QTC
         TC_real(scope, ccase, n);
