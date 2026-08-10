@@ -122,9 +122,9 @@ class QPDFTokenizer
             return this->type == tt_word;
         }
         bool
-        isWord(std::string const& value) const
+        isWord(std::string const& word) const
         {
-            return this->type == tt_word && this->value == value;
+            return this->type == tt_word && this->value == word;
         }
 
       private:

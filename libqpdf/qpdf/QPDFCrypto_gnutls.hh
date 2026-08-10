@@ -48,8 +48,8 @@ class QPDFCrypto_gnutls: public QPDFCryptoImpl
     gnutls_hash_hd_t hash_ctx;
     gnutls_cipher_hd_t cipher_ctx;
     int sha2_bits;
-    bool encrypt;
-    bool cbc_mode;
+    bool cur_encrypt;
+    bool cur_cbc_mode;
     char digest[64];
     unsigned char const* aes_key_data;
     size_t aes_key_len;

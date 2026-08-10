@@ -38,9 +38,9 @@ PDFVersion::updateIfGreater(PDFVersion const& other)
 }
 
 void
-PDFVersion::getVersion(std::string& version, int& extension_level) const
+PDFVersion::getVersion(std::string& version, int& ext_level) const
 {
-    extension_level = this->extension_level;
+    ext_level = this->extension_level;
     version = std::to_string(this->major_version) + "." + std::to_string(this->minor_version);
 }
 

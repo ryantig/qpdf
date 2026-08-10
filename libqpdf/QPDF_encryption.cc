@@ -100,30 +100,30 @@ QPDF::EncryptionData::getEncryptMetadata() const
 }
 
 void
-QPDF::EncryptionData::setO(std::string const& O)
+QPDF::EncryptionData::setO(std::string const& o)
 {
-    this->O = O;
+    this->O = o;
 }
 
 void
-QPDF::EncryptionData::setU(std::string const& U)
+QPDF::EncryptionData::setU(std::string const& u)
 {
-    this->U = U;
+    this->U = u;
 }
 
 void
 QPDF::EncryptionData::setV5EncryptionParameters(
-    std::string const& O,
-    std::string const& OE,
-    std::string const& U,
-    std::string const& UE,
-    std::string const& Perms)
+    std::string const& o,
+    std::string const& oe,
+    std::string const& u,
+    std::string const& ue,
+    std::string const& perms)
 {
-    this->O = O;
-    this->OE = OE;
-    this->U = U;
-    this->UE = UE;
-    this->Perms = Perms;
+    this->O = o;
+    this->OE = oe;
+    this->U = u;
+    this->UE = ue;
+    this->Perms = perms;
 }
 
 int
@@ -207,15 +207,15 @@ Encryption::getEncryptMetadata() const
 }
 
 void
-Encryption::setO(std::string const& O)
+Encryption::setO(std::string const& o)
 {
-    this->O = O;
+    this->O = o;
 }
 
 void
-Encryption::setU(std::string const& U)
+Encryption::setU(std::string const& u)
 {
-    this->U = U;
+    this->U = u;
 }
 
 void
@@ -239,17 +239,17 @@ Encryption::setId1(std::string const& val)
 
 void
 Encryption::setV5EncryptionParameters(
-    std::string const& O,
-    std::string const& OE,
-    std::string const& U,
-    std::string const& UE,
-    std::string const& Perms)
+    std::string const& o,
+    std::string const& oe,
+    std::string const& u,
+    std::string const& ue,
+    std::string const& perms)
 {
-    this->O = O;
-    this->OE = OE;
-    this->U = U;
-    this->UE = UE;
-    this->Perms = Perms;
+    this->O = o;
+    this->OE = oe;
+    this->U = u;
+    this->UE = ue;
+    this->Perms = perms;
 }
 
 void

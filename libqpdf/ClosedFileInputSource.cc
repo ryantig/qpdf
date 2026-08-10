@@ -17,7 +17,7 @@ ClosedFileInputSource::before()
 {
     if (nullptr == this->fis) {
         this->fis = std::make_shared<FileInputSource>(this->filename.c_str());
-        this->fis->seek(this->offset, SEEK_SET);
+        this->fis->seek(this->cur_offset, SEEK_SET);
         this->fis->setLastOffset(this->last_offset);
     }
 }
@@ -26,7 +26,7 @@ void
 ClosedFileInputSource::after()
 {
     this->last_offset = this->fis->getLastOffset();
-    this->offset = this->fis->tell();
+    this->cur_offset = this->fis->tell();
     if (this->stay_open) {
         return;
     }
@@ -68,7 +68,7 @@ ClosedFileInputSource::seek(qpdf_offset_t offset, int whence)
 void
 ClosedFileInputSource::rewind()
 {
-    this->offset = 0;
+    this->cur_offset = 0;
     if (this->fis.get()) {
         this->fis->rewind();
     }

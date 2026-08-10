@@ -28,15 +28,15 @@ FileInputSource::~FileInputSource()
 }
 
 void
-FileInputSource::setFilename(char const* filename)
+FileInputSource::setFilename(char const* fn)
 {
     this->close_file = true;
-    this->filename = filename;
-    this->file = QUtil::safe_fopen(filename, "rb");
+    this->filename = fn;
+    this->file = QUtil::safe_fopen(fn, "rb");
 }
 
 void
-FileInputSource::setFile(char const* description, FILE* filep, bool close_file)
+FileInputSource::setFile(char const* description, FILE* filep, bool should_close)
 {
     this->filename = description;
     this->file = filep;
