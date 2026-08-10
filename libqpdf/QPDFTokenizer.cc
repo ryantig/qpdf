@@ -960,8 +960,8 @@ Tokenizer::readToken(InputSource& input, std::string const& context, bool allow_
 
     Token token;
     bool unread_char;
-    char char_to_unread;
-    getToken(token, unread_char, char_to_unread);
+    char unread_ch;
+    getToken(token, unread_char, unread_ch);
 
     if (token.getType() == tt::tt_bad) {
         if (allow_bad) {
