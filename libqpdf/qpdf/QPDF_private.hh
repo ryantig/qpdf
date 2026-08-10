@@ -524,15 +524,15 @@ class QPDF::Doc::Encryption
     //  Bits in P are numbered from 1 as in the PDF spec.
     void setP(size_t bit, bool val);
     void setP(unsigned long val);
-    void setO(std::string const&);
-    void setU(std::string const&);
+    void setO(std::string const& o);
+    void setU(std::string const& u);
     void setId1(std::string const& val);
     void setV5EncryptionParameters(
-        std::string const& O,
-        std::string const& OE,
-        std::string const& U,
-        std::string const& UE,
-        std::string const& Perms);
+        std::string const& o,
+        std::string const& oe,
+        std::string const& u,
+        std::string const& ue,
+        std::string const& perms);
 
     std::string compute_encryption_key(std::string const& password) const;
 

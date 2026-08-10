@@ -8,8 +8,8 @@ QPDFCrypto_gnutls::QPDFCrypto_gnutls() :
     hash_ctx(nullptr),
     cipher_ctx(nullptr),
     sha2_bits(0),
-    encrypt(false),
-    cbc_mode(false),
+    cur_encrypt(false),
+    cur_cbc_mode(false),
     aes_key_data(nullptr),
     aes_key_len(0),
     fips_mode(gnutls_fips140_mode_enabled())
@@ -192,8 +192,8 @@ QPDFCrypto_gnutls::rijndael_init(
     unsigned char* cbc_block)
 {
     rijndael_finalize();
-    this->encrypt = encrypt;
-    this->cbc_mode = cbc_mode;
+    this->cur_encrypt = encrypt;
+    this->cur_cbc_mode = cbc_mode;
     if (!cbc_mode) {
         // Save the key so we can re-initialize.
         aes_key_data = key_data;
@@ -237,7 +237,7 @@ QPDFCrypto_gnutls::rijndael_init(
 void
 QPDFCrypto_gnutls::rijndael_process(unsigned char* in_data, unsigned char* out_data)
 {
-    if (encrypt) {
+    if (cur_encrypt) {
         gnutls_cipher_encrypt2(cipher_ctx, in_data, rijndael_buf_size, out_data, rijndael_buf_size);
     } else {
         gnutls_cipher_decrypt2(cipher_ctx, in_data, rijndael_buf_size, out_data, rijndael_buf_size);
@@ -246,9 +246,9 @@ QPDFCrypto_gnutls::rijndael_process(unsigned char* in_data, unsigned char* out_d
     // Gnutls doesn't support AES in ECB (non-CBC) mode, but the result is the same as if you just
     // reset the cbc block to all zeroes each time. We jump through a few hoops here to make this
     // work.
-    if (!cbc_mode) {
+    if (!cur_cbc_mode) {
         static unsigned char zeroes[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        rijndael_init(encrypt, aes_key_data, aes_key_len, false, zeroes);
+        rijndael_init(cur_encrypt, aes_key_data, aes_key_len, false, zeroes);
     }
 }
 

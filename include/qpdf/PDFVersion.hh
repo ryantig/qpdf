@@ -47,7 +47,7 @@ class PDFVersion
     // Initialize a string and integer suitable for passing to QPDFWriter::setMinimumPDFVersion or
     // QPDFWriter::forcePDFVersion.
     QPDF_DLL
-    void getVersion(std::string& version, int& extension_level) const;
+    void getVersion(std::string& version, int& ext_level) const;
 
     QPDF_DLL
     int getMajor() const;
