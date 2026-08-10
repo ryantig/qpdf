@@ -14,7 +14,7 @@
 static char const* whoami = 0;
 
 static void
-usage()
+usage(void)
 {
     fprintf(stderr, "Usage: %s infile\n", whoami);
     exit(2);

@@ -80,7 +80,7 @@ extern "C" {
      */
     typedef struct _qpdfjob_handle* qpdfjob_handle;
     QPDF_DLL
-    qpdfjob_handle qpdfjob_init();
+    qpdfjob_handle qpdfjob_init(void);
 
     QPDF_DLL
     void qpdfjob_cleanup(qpdfjob_handle* j);

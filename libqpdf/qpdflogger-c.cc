@@ -14,13 +14,13 @@ _qpdflogger_handle::_qpdflogger_handle(std::shared_ptr<QPDFLogger> l) :
 }
 
 qpdflogger_handle
-qpdflogger_default_logger()
+qpdflogger_default_logger(void)
 {
     return new _qpdflogger_handle(QPDFLogger::defaultLogger());
 }
 
 qpdflogger_handle
-qpdflogger_create()
+qpdflogger_create(void)
 {
     return new _qpdflogger_handle(QPDFLogger::create());
 }

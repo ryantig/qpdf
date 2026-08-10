@@ -8,7 +8,7 @@
 static char const* whoami = 0;
 
 static void
-usage()
+usage(void)
 {
     fprintf(stderr, "Usage: %s infile outfile\n", whoami);
     exit(2);

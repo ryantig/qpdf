@@ -6,7 +6,7 @@
 
 #ifndef QPDF_NO_WCHAR_T
 static void
-wide_test()
+wide_test(void)
 {
     wchar_t const* argv[5];
     argv[0] = L"qpdfjob";
@@ -35,7 +35,7 @@ custom_log(char const* data, size_t size, void* udata)
 }
 
 static void
-run_tests()
+run_tests(void)
 {
     /* Be sure to use a different output file for each test. */
     qpdfjob_handle j = NULL;

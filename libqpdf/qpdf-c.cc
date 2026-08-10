@@ -89,7 +89,7 @@ trap_errors(qpdf_data qpdf, std::function<void(qpdf_data)> fn)
 }
 
 char const*
-qpdf_get_qpdf_version()
+qpdf_get_qpdf_version(void)
 {
     QTC::TC("qpdf", "qpdf-c called qpdf_get_qpdf_version");
     // The API guarantees that this is a static value.
@@ -97,7 +97,7 @@ qpdf_get_qpdf_version()
 }
 
 qpdf_data
-qpdf_init()
+qpdf_init(void)
 {
     QTC::TC("qpdf", "qpdf-c called qpdf_init");
     auto qpdf = new _qpdf_data();

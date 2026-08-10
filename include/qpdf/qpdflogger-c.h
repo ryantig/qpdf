@@ -44,13 +44,13 @@ extern "C" {
 
     typedef struct _qpdflogger_handle* qpdflogger_handle;
     QPDF_DLL
-    qpdflogger_handle qpdflogger_default_logger();
+    qpdflogger_handle qpdflogger_default_logger(void);
 
     /* Calling cleanup on the handle returned by qpdflogger_create destroys the handle but not the
      * underlying logger. See comments above.
      */
     QPDF_DLL
-    qpdflogger_handle qpdflogger_create();
+    qpdflogger_handle qpdflogger_create(void);
 
     QPDF_DLL
     void qpdflogger_cleanup(qpdflogger_handle* l);

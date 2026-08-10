@@ -40,7 +40,7 @@ do_fopen(char const* filename)
 }
 
 int
-main()
+main(void)
 {
     FILE* info = do_fopen("info");
     FILE* warn = do_fopen("warn");
