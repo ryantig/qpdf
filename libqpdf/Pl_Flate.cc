@@ -23,6 +23,16 @@ using namespace qpdf;
 namespace
 {
     static unsigned long long const& memory_limit{global::Limits::flate_max_memory()};
+
+#ifdef USE_LIBDEFLATE
+    // Levels 0-5 are passed through to libdeflate at the requested level. The default level and
+    // levels 6-9 use libdeflate level 12.
+    int
+    libdeflate_level_for(int level)
+    {
+        return (level >= 0 && level <= 5) ? level : 12;
+    }
+#endif
 } // namespace
 
 int Pl_Flate::compression_level = Z_DEFAULT_COMPRESSION;
@@ -426,7 +436,7 @@ Pl_Flate::finish_libdeflate()
     }
     auto buf = std::move(*m->libdeflate_buf.release());
     
-    struct libdeflate_compressor* compressor = libdeflate_alloc_compressor(12);
+    struct libdeflate_compressor* compressor = libdeflate_alloc_compressor(libdeflate_level_for(compression_level));
     if (!compressor) {
         throw std::runtime_error("Failed to allocate libdeflate compressor");
     }
